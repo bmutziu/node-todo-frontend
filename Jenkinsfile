@@ -5,7 +5,9 @@ pipeline {
     dockerImage = ''
     NEXUS_URL = "http://192.168.8.100:8081"
   }
-  agent any
+  agent {
+    label 'docker'
+  }
   tools { nodejs "node-kpi" }
   stages {
     stage('Setup') {
@@ -103,6 +105,50 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+
+    stage('DEV Deploy') {
+      steps {
+        sh 'echo Deploy to DEV . . .'
+      }
+    }
+
+    stage('PRE Deploy') {
+      when {
+        expression { return target == 'pre' || target == 'pro' }
+      }
+      steps {
+        sh 'echo Deploy to PRE . . .'
+      }
+    }
+
+    stage('UAT Test') {
+      when {
+        expression { target == 'pro' }
+      }
+      steps {
+        sh 'echo UAT Test . . .'
+      }
+    }
+
+    stage('Approval') {
+      when {
+        expression { target == 'pro' }
+      }
+      steps {
+        timeout(time:30, unit:'MINUTES') {
+          input message: "Deploy to Production?", id: "approval"
+        }
+      }
+    }
+
+    stage('PRO Deploy') {
+      when {
+        expression { return target == 'pro' }
+      }
+      steps {
+        sh 'echo Deploy to PRO . . .'
       }
     }
   }
