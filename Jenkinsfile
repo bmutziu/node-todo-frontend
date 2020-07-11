@@ -86,7 +86,6 @@ pipeline {
         }
       }
     }
-    /*
     stage('Building image') {
       steps{
         script {
@@ -108,7 +107,6 @@ pipeline {
         sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
-    */
   }
   /*
   triggers {
