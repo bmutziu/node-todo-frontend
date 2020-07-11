@@ -1,27 +1,27 @@
 //Jenkins file only to tutorial example
 pipeline {
   agent any
-    
-  tools {nodejs "node"}
-    
+
+  tools {nodejs "node-kpi"}
+
   stages {
-        
+
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/gustavoapolinario/node-todo-frontend'
+        git 'https://github.com/bmutziu/node-todo-frontend'
       }
     }
-        
+
     stage('Install dependencies') {
       steps {
         sh 'npm install'
       }
     }
-     
+
     stage('Test') {
       steps {
          sh 'npm test'
       }
-    }      
+    }
   }
 }
