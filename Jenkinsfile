@@ -41,13 +41,13 @@ pipeline {
     stage('APP Quality'){
       environment {
         scannerHome = tool 'sonarqube-nodejs'
-        organization = "bmutziu-github"
+        //organization = "bmutziu-github"
       }
       steps {
 	withSonarQubeEnv('sonarqube') {
             sh """${scannerHome}/bin/sonar-scanner \
                       -Dsonar.sources=src \
-                      -Dsonar.organization=${organization} \
+                      //-Dsonar.organization=${organization} \
                       -Dsonar.projectKey=${env.JOB_NAME} \
                       -Dsonar.projectName=${env.JOB_NAME} \
                       -Dsonar.projectBaseDir=${env.WORKSPACE} \
