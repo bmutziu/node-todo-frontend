@@ -3,8 +3,11 @@ pipeline {
     registry = "bmutziu/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
+    NEXUS_URL = "http://192.168.8.100:8081"
   }
-  agent any
+  agent any {
+    label docker
+  }
   tools { nodejs "node-kpi" }
   stages {
     stage('Setup') {
@@ -70,6 +73,18 @@ pipeline {
       steps {
 	sh 'npm test'
 	}
+    }
+    stage('APP Package'){
+      steps {
+        sh "tar --exclude='./.git' --exclude='./Jenkinsfile' --exclude='./Dockerfile' --exclude='./node_modules' -czv src/ -f " + packname
+      }
+    }
+    stage('APP Publish') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'nexus-admin', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
+          sh 'curl -v -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file ' + packname + ' ' + publish_url
+        }
+      }
     }
     /*
     stage('Building image') {
