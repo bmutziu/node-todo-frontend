@@ -5,7 +5,7 @@ pipeline {
     dockerImage = ''
     NEXUS_URL = "http://192.168.8.100:8081"
   }
-  agent any {
+  agent {
     label docker
   }
   tools { nodejs "node-kpi" }
