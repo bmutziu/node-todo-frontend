@@ -48,6 +48,8 @@ pipeline {
       }
       steps {
 	withSonarQubeEnv('sonarqube') {
+            echo "SONAR_HOST_URL=${SONAR_HOST_URL}"
+            echo "SONAR_AUTH_TOKEN=${SONAR_AUTH_TOKEN}"
             sh """${scannerHome}/bin/sonar-scanner \
                       -Dsonar.sources=src \
                       -Dsonar.projectKey=${env.JOB_NAME} \
