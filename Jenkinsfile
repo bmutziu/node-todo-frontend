@@ -153,6 +153,68 @@ pipeline {
       }
     }
   }
+
+  post {
+    success {
+      script {
+        currentBuild.result = "SUCCESS"
+
+        /* Custom data map for InfluxDB */
+        def custom = [:]
+        custom['branch']      = env.GIT_BRANCH
+        custom['environment'] = target
+        custom['part']        = 'jenkins'
+        custom['version']     = version
+
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+      }
+    }
+
+    failure {
+      script {
+        currentBuild.result = "FAILURE"
+
+        /* Custom data map for InfluxDB */
+        def custom = [:]
+        custom['branch']      = env.GIT_BRANCH
+        custom['environment'] = target
+        custom['part']        = 'jenkins'
+        custom['version']     = version
+
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+      }
+    }
+
+    unstable {
+      script {
+        currentBuild.result = "FAILURE"
+
+        /* Custom data map for InfluxDB */
+        def custom = [:]
+        custom['branch']      = env.GIT_BRANCH
+        custom['environment'] = target
+        custom['part']        = 'jenkins'
+        custom['version']     = version
+
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+      }
+    }
+
+     aborted {
+      script {
+        currentBuild.result = "FAILURE"
+
+        /* Custom data map for InfluxDB */
+        def custom = [:]
+        custom['branch']      = env.GIT_BRANCH
+        custom['environment'] = target
+        custom['part']        = 'jenkins'
+        custom['version']     = version
+
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+      }
+    }
+  }
   /*
   triggers {
     pollSCM('')
