@@ -160,6 +160,7 @@ pipeline {
     success {
       script {
         currentBuild.result = "SUCCESS"
+        currentBuild.description = "Successful Construction"
 
         /* Custom data map for InfluxDB */
         def custom = [:]
@@ -168,13 +169,15 @@ pipeline {
         custom['part']        = 'jenkins'
         custom['version']     = version
 
-        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi', jenkinsEnvParameterField: 'build_agent_name=' + 'master' + '\n' + 'build_status_message=' + 'Just Words'])
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi', jenkinsEnvParameterField: 'build_agent_name=' + 'docker' + '\n' + 'build_status_message=' + currentBuild.description])
       }
     }
 
     failure {
       script {
         currentBuild.result = "FAILURE"
+        currentBuild.description = "Failed Construction"
+
 
         /* Custom data map for InfluxDB */
         def custom = [:]
@@ -183,13 +186,14 @@ pipeline {
         custom['part']        = 'jenkins'
         custom['version']     = version
 
-        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi', jenkinsEnvParameterField: 'build_agent_name=' + 'docker' + '\n' + 'build_status_message=' + currentBuild.description])
       }
     }
 
     unstable {
       script {
         currentBuild.result = "FAILURE"
+        currentBuild.description = "Failed Construction"
 
         /* Custom data map for InfluxDB */
         def custom = [:]
@@ -198,13 +202,14 @@ pipeline {
         custom['part']        = 'jenkins'
         custom['version']     = version
 
-        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi', jenkinsEnvParameterField: 'build_agent_name=' + 'docker' + '\n' + 'build_status_message=' + currentBuild.description])
       }
     }
 
      aborted {
       script {
         currentBuild.result = "FAILURE"
+        currentBuild.description = "Failed Construction"
 
         /* Custom data map for InfluxDB */
         def custom = [:]
@@ -213,7 +218,7 @@ pipeline {
         custom['part']        = 'jenkins'
         custom['version']     = version
 
-        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi', jenkinsEnvParameterField: 'build_agent_name=' + 'docker' + '\n' + 'build_status_message=' + currentBuild.description])
       }
     }
   }
