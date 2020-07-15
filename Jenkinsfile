@@ -168,7 +168,7 @@ pipeline {
         custom['part']        = 'jenkins'
         custom['version']     = version
 
-        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'])
+        step([$class: 'InfluxDbPublisher', customData: custom, target: 'devops-kpi'], jenkinsEnvParameterField: 'build_agent_name=' + 'master' + '\n' + 'build_status_message=' + 'Just Words')
       }
     }
 
