@@ -41,6 +41,7 @@ pipeline {
         sh 'npm install'
       }
     }
+    /*
     stage('APP Quality'){
       environment {
         scannerHome = tool 'sonarqube-nodejs'
@@ -70,7 +71,7 @@ pipeline {
             waitForQualityGate abortPipeline: true
         }
       }
-    }
+    }*/
     stage('Test') {
       steps {
 	sh 'npm test'
@@ -81,6 +82,7 @@ pipeline {
         sh "tar --exclude='./.git' --exclude='./Jenkinsfile' --exclude='./Dockerfile' --exclude='./node_modules' -czv src/ -f " + packname
       }
     }
+    /*
     stage('APP Publish') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'nexus-admin', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
@@ -88,6 +90,7 @@ pipeline {
         }
       }
     }
+    */
     /*
     stage('Building image') {
       steps{
