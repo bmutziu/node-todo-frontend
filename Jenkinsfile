@@ -144,7 +144,7 @@ pipeline {
         expression { target == 'pro' }
       }
       steps {
-        script {
+        /*script {
           env.flagError = "false"
             try {
               input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
@@ -152,7 +152,8 @@ pipeline {
                println "input aborted or timeout expired, will try to rollback."
                env.flagError = "true"
             }
-        }
+        }*/
+        sh 'echo Timeout was here . . .'
       }
     }
 
