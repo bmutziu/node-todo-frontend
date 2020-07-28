@@ -144,8 +144,14 @@ pipeline {
         expression { target == 'pro' }
       }
       steps {
-        timeout(time:30, unit:'MINUTES') {
-          input message: "Deploy to Production?", id: "approval"
+        script {
+          env.flagError = "false"
+            try {
+              input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
+            }catch(e){
+               println "input aborted or timeout expired, will try to rollback."
+               env.flagError = "true"
+            }
         }
       }
     }
