@@ -55,8 +55,9 @@ pipeline {
                       -Dsonar.sources=src \
                       -Dsonar.projectKey=${env.JOB_NAME} \
                       -Dsonar.projectName=${env.JOB_NAME} \
-                      -Dsonar.projectBaseDir=${env.WORKSPACE} \
-                      -Dsonar.exclusions=src/test/**,node_modules/**,**/migrations/**,**/libs/transactional_db/** \
+                      -Dsonar.projectBaseDir=${env.WORKSPACE} \ */
+//                      -Dsonar.exclusions=src/test/**,node_modules/**,**/migrations/**,**/libs/transactional_db/** \
+/*
                       -Dsonar.sourceEncoding=UTF-8 \
                       -Dsonar.language=js \
                       -Dsonar.projectDescription='NodeJS ToDo FrontEnd' \
