@@ -143,8 +143,7 @@ pipeline {
         timeout(time:30, unit:'MINUTES') {
           input message: "Deploy to Production?", ok: "Continue"
         }
-/*
-        script {
+/*      script {
           env.flagError = "false"
             try {
               input(message: 'Please validate, this job will automatically ABORTED after 30 minutes even if no user input provided', ok: 'Proceed')
@@ -154,6 +153,21 @@ pipeline {
             }
         }
         sh 'echo Timeout was here . . .'*/
+        script {
+          try {
+            timeout(time:30, unit:'MINUTES') {
+              env.APPROVE_PROD = input message: 'Deploy to Production', ok: 'Continue', parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING to PRODUCTION?')]
+              if (env.APPROVE_PROD == 'YES'){
+                env.DPROD = true
+              } else {
+                env.DPROD = false
+              }
+            }
+          } catch (error) {
+              env.DPROD = true
+              echo 'Timeout has been reached! Deploy to PRODUCTION automatically activated'
+            }
+        }
       }
     }
 
