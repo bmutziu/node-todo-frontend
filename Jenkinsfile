@@ -140,9 +140,9 @@ pipeline {
         expression { target == 'pro' }
       }
       steps {
-        timeout(time:30, unit:'MINUTES') {
-          input message: "Deploy to Production?", ok: "Continue"
-        }
+/*        timeout(time:30, unit:'MINUTES') {
+          input message: "Deploy to Production?", id: "approval"
+        }*/
 /*      script {
           env.flagError = "false"
             try {
