@@ -141,7 +141,7 @@ pipeline {
       }
       steps {
         timeout(time:30, unit:'MINUTES') {
-          input message: "Deploy to Production?", id: "approval"
+          input message: "Deploy to Production?", ok: "Continue"
         }
 /*
         script {
