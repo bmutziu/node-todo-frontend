@@ -41,7 +41,6 @@ pipeline {
         sh 'npm install'
       }
     }
-    /*
     stage('APP Quality'){
       environment {
         scannerHome = tool 'sonarqube-nodejs'
@@ -56,8 +55,7 @@ pipeline {
                       -Dsonar.projectKey=${env.JOB_NAME} \
                       -Dsonar.projectName=${env.JOB_NAME} \
                       -Dsonar.projectBaseDir=${env.WORKSPACE} \ */
-//                      -Dsonar.exclusions=src/test/**,node_modules/**,**/migrations/**,**/libs/transactional_db/** \
-/*
+                      -Dsonar.exclusions=src/test/**,node_modules/**,**/migrations/**,**/libs/transactional_db/** \
                       -Dsonar.sourceEncoding=UTF-8 \
                       -Dsonar.language=js \
                       -Dsonar.projectDescription='NodeJS ToDo FrontEnd' \
@@ -72,7 +70,7 @@ pipeline {
             waitForQualityGate abortPipeline: true
         }
       }
-    }*/
+    }
     stage('Test') {
       steps {
 	sh 'npm test'
@@ -83,7 +81,6 @@ pipeline {
         sh "tar --exclude='./.git' --exclude='./Jenkinsfile' --exclude='./Dockerfile' --exclude='./node_modules' -czv src/ -f " + packname
       }
     }
-    /*
     stage('APP Publish') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'nexus-admin', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
@@ -91,7 +88,6 @@ pipeline {
         }
       }
     }
-    */
     /*
     stage('Building image') {
       steps{
